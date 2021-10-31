@@ -3,11 +3,11 @@ exports.up = async function (knex) {
     await knex.schema
         .createTable('categories', tbl => {
             tbl.increments('category_id')
-            tbl.string('category_name')
+            tbl.string('category_name').unique().notNullable()
         })
         .createTable('products', tbl => {
             tbl.increments('product_id')
-            tbl.string('product_name').uniquie().notNullable()
+            tbl.string('product_name').unique().notNullable()
             tbl.integer('category_id')
                 .notNullable()
                 .unsigned()
@@ -17,7 +17,7 @@ exports.up = async function (knex) {
                 .onUpdate("RESTRICT")
             tbl.integer('product_inventory').unsigned().notNullable()
             tbl.decimal('product_price').notNullable()
-            tbl.string('product_description')
+            tbl.string('product_description', 1000)
             tbl.string('image_url').notNullable()
         })
         .createTable('reviews', tbl => {
@@ -38,7 +38,7 @@ exports.up = async function (knex) {
 };
 
 exports.down = async function (knex) {
-    knex.schema
+    await knex.schema
         .dropTableIfExists('reviews')
         .dropTableIfExists('products')
         .dropTableIfExists('categories')
