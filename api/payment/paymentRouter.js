@@ -1,4 +1,5 @@
 const router = require('express').Router()
+// eslint-disable-next-line no-undef
 const stripe = require('stripe')(process.env.SECRET_KEY)
 
 
