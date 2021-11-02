@@ -1,7 +1,9 @@
 const express = require('express')
 const cors = require('cors')
 const helmet = require('helmet')
+const userRouter = require('./users/userRouter')
 const paymentRouter = require('./payment/paymentRouter')
+const productRouter = require('./products/productRouter')
 
 
 const server = express()
@@ -9,7 +11,9 @@ server.use(helmet())
 server.use(express.json())
 server.use(cors())
 
+server.use('/api/users', userRouter)
 server.use('/api/payment', paymentRouter)
+server.use('/api/products', productRouter)
 
 server.get('/', (req, res) => {
     res.status(200).json({

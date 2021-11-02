@@ -7,6 +7,7 @@ exports.up = async function (knex) {
         })
         .createTable('products', tbl => {
             tbl.increments('product_id')
+            tbl.boolean('active').defaultTo(true)
             tbl.string('product_name').unique().notNullable()
             tbl.integer('category_id')
                 .notNullable()
@@ -15,8 +16,8 @@ exports.up = async function (knex) {
                 .inTable('categories')
                 .onDelete('CASCADE')
                 .onUpdate("RESTRICT")
-            tbl.integer('product_inventory').unsigned().notNullable()
-            tbl.decimal('product_price').notNullable()
+            tbl.integer('product_inventory').unsigned().defaultTo(0)
+            tbl.decimal('product_price').unsigned().notNullable()
             tbl.string('product_description', 1000)
             tbl.string('image_url').notNullable()
         })
@@ -35,6 +36,22 @@ exports.up = async function (knex) {
                 .onUpdate('CASCADE')
             tbl.string('review_date')
         })
+        .createTable('roles', tbl => {
+            tbl.increments('role_id')
+            tbl.string('role_name').notNullable()
+        })
+        .createTable('users', tbl => {
+            tbl.increments('user_id')
+            tbl.string('username').notNullable().unique()
+            tbl.string('password').notNullable()
+            tbl.integer('role_id')
+                .unsigned()
+                .notNullable()
+                .references('role_id')
+                .inTable('roles')
+                .onUpdate('CASCADE')
+                .onDelete('RESTRICT')
+        })
 };
 
 exports.down = async function (knex) {
@@ -42,4 +59,6 @@ exports.down = async function (knex) {
         .dropTableIfExists('reviews')
         .dropTableIfExists('products')
         .dropTableIfExists('categories')
+        .dropTableIfExists('users')
+        .dropTableIfExists('roles')
 };

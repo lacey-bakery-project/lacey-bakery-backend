@@ -107,6 +107,7 @@ const categories = [
     category_name: 'cupcakes'
   },
 ]
+
 const reviews = [
   {
     review_rating: 5,
@@ -206,9 +207,43 @@ const reviews = [
   },
 ]
 
+const roles = [
+  {
+    role_name: 'admin'
+  },
+  {
+    role_name: 'client'
+  },
+]
+
+const users = [
+  {
+    username: 'admin',
+    password: '1234',
+    role_id: 1
+  },
+  {
+    username: 'owner',
+    password: '1234',
+    role_id: 1
+  },
+  {
+    username: 'sanoo',
+    password: '1234',
+    role_id: 2
+  },
+  {
+    username: 'van',
+    password: '1234',
+    role_id: 2
+  },
+]
+
 
 exports.seed = async function (knex) {
   await knex('categories').insert(categories)
   await knex('products').insert(products)
   await knex('reviews').insert(reviews)
+  await knex('roles').insert(roles)
+  await knex('users').insert(users)
 };
